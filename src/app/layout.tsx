@@ -8,6 +8,9 @@ import {
   UserButton,
 } from "@clerk/nextjs";
 import "./globals.css";
+import Providers from "@/components/Provider";
+import { Toaster } from "react-hot-toast";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,24 +29,12 @@ export const metadata: Metadata = {
 // Header Component
 function Header() {
   return (
-    <header
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: "20px",
-        background: "#f4f4f4",
-        borderBottom: "1px solid #ddd",
-      }}
-    >
-      <h1 style={{ fontSize: "24px", fontWeight: "bold" }}>ChatPDF</h1>
+    <header>
       <div>
         <SignedIn>
-          {/* Kullanıcı giriş yapmışsa UserButton bileşeni gösterilir */}
           <UserButton />
         </SignedIn>
         <SignedOut>
-          {/* Kullanıcı çıkış yapmışsa giriş butonu gösterilir */}
           <SignInButton />
         </SignedOut>
       </div>
@@ -58,15 +49,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en"> {/* <html> etiketi burada yer alıyor */}
       <ClerkProvider>
-        {/* Header bileşenini tüm sayfalara ekliyoruz */}
-        <Header />
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
-          {children}
-        </body>
+        <Providers>
+          <body
+            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          >
+            <Header /> {/* Header bileşenini body içine yerleştiriyoruz */}
+            {children}
+          </body>
+          <Toaster />
+        </Providers>
       </ClerkProvider>
     </html>
   );
